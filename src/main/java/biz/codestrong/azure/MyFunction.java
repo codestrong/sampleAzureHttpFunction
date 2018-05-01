@@ -1,4 +1,4 @@
-package biz.codestrong.jscraper;
+package biz.codestrong.azure;
 
 import com.microsoft.azure.serverless.functions.ExecutionContext;
 import com.microsoft.azure.serverless.functions.HttpRequestMessage;
