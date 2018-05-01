@@ -32,22 +32,27 @@ public class MyFunction {
 		CloudBlobContainer container = null;
 
 		try {
-			storageAccount = CloudStorageAccount.parse("UseDevelopmentStorage=true");
+			context.getLogger().info("Connecting to development storage");
+			// storageAccount = CloudStorageAccount.parse("UseDevelopmentStorage=true");
+			storageAccount = CloudStorageAccount.getDevelopmentStorageAccount();
+
+			context.getLogger().info("Creating blob client");
 			blobClient = storageAccount.createCloudBlobClient();
+
+			context.getLogger().info("Obtaining blob container reference");
 			container = blobClient.getContainerReference("quickstartcontainer");
 
-			// Create the container if it does not exist with public access.
-			System.out.println("Creating container: " + container.getName());
+			context.getLogger().info("Creating container: " + container.getName());
 			container.createIfNotExists(BlobContainerPublicAccessType.CONTAINER, new BlobRequestOptions(), new OperationContext());
 
 			// Getting a blob reference
 			CloudBlockBlob blob = container.getBlockBlobReference("test1");
 
 			// Creating blob and uploading file to it
-			System.out.println("Uploading the sample file ");
+			context.getLogger().info("Uploading the sample file ");
 			blob.uploadFromByteArray(requestBody.getBytes(), 0, requestBody.length());
 		} catch (Exception e) {
-			System.out.println(String.format("Error returned from the service. %s: %s", e.getClass().getCanonicalName(), e.getMessage()));
+			context.getLogger().info(String.format("Error returned from the service. %s: %s", e.getClass().getCanonicalName(), e.getMessage()));
 		}
 
 		return request.createResponse(200, requestBody);
